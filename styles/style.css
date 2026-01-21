@@ -43,8 +43,8 @@ body {
   border-radius: var(--radius);
   border: 1px solid var(--border-color);
   text-align: center;
-  width: 100%;
-  max-width: 350px;
+  width: 80%;
+  max-width: 700px;
   box-shadow: var(--shadow);
   transition: var(--transition);
 }
@@ -150,6 +150,7 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: var(--transition);
+  max-width: 150px;
 }
 
 button:hover {
