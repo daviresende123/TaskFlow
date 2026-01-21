@@ -96,3 +96,23 @@ body {
   }
 }
 /* End of Glowing Ring logic */
+
+/* Card text */
+h2 {
+  color: var(--accent-primary);
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  color: var(--text-secondary);
+  font-weight: 400;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-text {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
