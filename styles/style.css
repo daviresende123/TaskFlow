@@ -48,3 +48,51 @@ body {
   box-shadow: var(--shadow);
   transition: var(--transition);
 }
+
+/* Glowing Ring */
+.glow-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+
+  /* Continuous border with a subtle gradient so the spin is visible */
+  border: 4px solid transparent;
+
+  background:
+    linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+    conic-gradient(
+        var(--accent-primary),
+        var(--accent-hover),
+        var(--accent-primary)
+      )
+      border-box;
+
+  animation:
+    spin 6s linear infinite,
+    smoothBreathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes smoothBreathe {
+  0% {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+
+    filter: brightness(1);
+  }
+
+  100% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+
+    filter: brightness(1.3);
+  }
+}
+/* End of Glowing Ring logic */
