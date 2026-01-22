@@ -165,3 +165,9 @@ button:active {
   transition: 0.1s;
 }
 /* End of Button Style */
+
+/* DashBoard */
+.hidden {
+  display: none !important;
+}
+
