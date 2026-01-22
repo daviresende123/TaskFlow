@@ -1,26 +1,40 @@
-//Elements references
+/* Elements references */
 const loginForm = document.getElementById("login-form");
 const userGreeting = document.getElementById("user-greeting");
 const dashboardScreen = document.getElementById("dashboard-screen");
 const loginScreen = document.querySelector(".card");
+const usernameInput = document.getElementById("username");
 
-//Event listener for the login form
-loginForm.addEventListener("submit", (event) => {
-  //Stop the page from reloading
-  event.preventDefault();
+/* Function to handle the View Switching logic */
+function displayDashboard(name) {
+  loginScreen.classList.add("hidden");
+  dashboardScreen.classList.remove("hidden");
+  userGreeting.textContent = `Welcome back, ${name}!`;
+}
 
-  //Get the value from the input field
-  const userName = document.getElementById("username").value;
+/* Check LocalStorage on page load */
+window.addEventListener("DOMContentLoaded", () => {
+  const savedName = localStorage.getItem("taskflow_user");
 
-  if (userName.trim() !== "") {
-    //Perform the switch
-    // Hide the Login Card
-    loginScreen.classList.add("hidden");
-
-    // Show the Dashboard
-    dashboardScreen.classList.remove("hidden");
-
-    // Update the greeting text
-    userGreeting.textContent = `Welcome, ${userName}!`;
+  if (savedName) {
+    displayDashboard(savedName);
   }
 });
+
+/* Screen transition logic */
+
+/* Event listener for the login form */
+loginForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const userName = usernameInput.value.trim();
+
+  if (userName !== "") {
+    /* Save name to LocalStorage */
+    localStorage.setItem("taskflow_user", userName);
+
+    /* Update UI */
+    displayDashboard(userName);
+  }
+});
+/* End of screen transition logic */
