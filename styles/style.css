@@ -166,7 +166,51 @@ button:active {
 }
 /* End of Button Style */
 
-/* DashBoard */
+/* DashBoard Style*/
 .hidden {
   display: none !important;
 }
+
+.dashboard-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+
+.task-form-card,
+.task-list-card {
+  width: 100% !important; /* Overriding the 70% from base card */
+  text-align: left;
+}
+
+.task-form-card {
+  flex: 1;
+}
+.task-list-card {
+  flex: 2;
+}
+
+/* Simple List Styling */
+#task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+  transition: var(--transition);
+}
+
+.task-item.completed {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+/* End of Dashboard style */

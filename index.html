@@ -32,10 +32,35 @@
 
     <!-- Dashboard -->
     <section id="dashboard-screen" class="hidden">
-      <header>
+      <header class="dashboard-header">
         <h2 id="user-greeting"></h2>
-        <p>This is your dashboard!</p>
+        <button id="logout-btn" class="logout-btn">Logout</button>
       </header>
+
+      <div class="dashboard-content">
+        <aside class="card task-form-card">
+          <h3>Create New Task</h3>
+          <form id="task-form">
+            <input
+              type="text"
+              id="task-input"
+              placeholder="What needs to be done?"
+              required
+            />
+            <select id="task-priority">
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
+            </select>
+            <button type="submit">Add Task</button>
+          </form>
+        </aside>
+
+        <main class="card task-list-card">
+          <h3>My Tasks</h3>
+          <ul id="task-list"></ul>
+        </main>
+      </div>
     </section>
     <!-- End of Dashboard -->
   </body>
