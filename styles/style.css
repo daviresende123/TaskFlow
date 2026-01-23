@@ -172,6 +172,39 @@ button:active {
   margin-top: 0.5em;
 }
 
+.task-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.edit-input {
+  background: var(--card-bg);
+  border: 1px solid var(--accent-primary);
+  padding: 5px;
+  color: white;
+  border-radius: 4px;
+  max-width: 350px;
+}
+
+.edit-select {
+  padding: 2px;
+  font-size: 0.8rem;
+  margin-bottom: 0;
+  max-width: 350px;
+}
+
+.action-btn.save {
+  background-color: var(--status-low); /* Verdinha para salvar */
+  margin-bottom: 0.5em;
+}
+
+.action-btn.edit {
+  background-color: var(--status-medium); /* Verdinha para salvar */
+  margin-top: 0.5em;
+}
+
 /* End of Button Style */
 
 /* DashBoard Style*/

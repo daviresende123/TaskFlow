@@ -66,6 +66,7 @@ function renderTasks() {
         </div>
         <div class="actions">
             <button class="action-btn" onclick="toggleTask(${index})">✔</button>
+            <button class="action-btn edit" onclick="editTask(${index})" title="Edit">✏️</button>
             <button class="action-btn delete" onclick="deleteTask(${index})">✖</button>
         </div>
     `;
@@ -111,6 +112,39 @@ window.addEventListener("DOMContentLoaded", () => {
     renderTasks(); /* Render the list if user is logged in */
   }
 });
+
+/* Edit task logic */
+window.editTask = (index) => {
+  const li = taskList.children[index];
+  const task = tasks[index];
+
+  li.innerHTML = `
+        <div class="task-edit-container">
+            <input type="text" id="edit-text-${index}" value="${task.text}" class="edit-input">
+            <select id="edit-priority-${index}" class="edit-select">
+                <option value="low" ${task.priority === "low" ? "selected" : ""}> Low</option>
+                <option value="medium" ${task.priority === "medium" ? "selected" : ""}> Medium</option>
+                <option value="high" ${task.priority === "high" ? "selected" : ""}> High</option>
+            </select>
+        </div>
+        <div class="actions">
+            <button class="action-btn save" onclick="saveTask(${index})">💾</button>
+            <button class="action-btn" onclick="renderTasks()">✕</button>
+        </div>
+    `;
+};
+
+/* Save Edited Task */
+window.saveTask = (index) => {
+  const newText = document.getElementById(`edit-text-${index}`).value;
+  const newPriority = document.getElementById(`edit-priority-${index}`).value;
+
+  if (newText.trim() !== "") {
+    tasks[index].text = newText;
+    tasks[index].priority = newPriority;
+    renderTasks(); // Refresh UI and Save to LocalStorage
+  }
+};
 /* End of CRUD logic */
 
 /* Logout logic */
