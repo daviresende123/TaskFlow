@@ -55,21 +55,44 @@ let tasks = JSON.parse(localStorage.getItem("taskflow_tasks")) || [];
 function renderTasks() {
   taskList.innerHTML = "";
 
-  tasks.forEach((task, index) => {
+  /* Get values from the filter selects */
+  const priorityFilter = document.getElementById("filter-priority").value;
+  const sortOrder = document.getElementById("sort-order").value;
+
+  /* Create a modified copy of the array */
+  let displayTasks = [...tasks];
+
+  /* Apply filters */
+  if (priorityFilter !== "all") {
+    displayTasks = displayTasks.filter((t) => t.priority === priorityFilter);
+  }
+
+  /* Apply sorting */
+  if (sortOrder === "newest") {
+    displayTasks.reverse(); // Standard is oldest (index 0)
+  } else if (sortOrder === "priority") {
+    const weights = { high: 3, medium: 2, low: 1 };
+    displayTasks.sort((a, b) => weights[b.priority] - weights[a.priority]);
+  }
+
+  /* Render the list */
+  displayTasks.forEach((task) => {
+    const originalIndex = tasks.indexOf(task);
+
     const li = document.createElement("li");
     li.className = `task-item ${task.completed ? "completed" : ""}`;
 
     li.innerHTML = `
-        <div class="task-info">
-            <span class="priority-dot dot-${task.priority}"></span>
-            <span>${task.text}</span>
-        </div>
-        <div class="actions">
-            <button class="action-btn" onclick="toggleTask(${index})">✔</button>
-            <button class="action-btn edit" onclick="editTask(${index})" title="Edit">✏️</button>
-            <button class="action-btn delete" onclick="deleteTask(${index})">✖</button>
-        </div>
-    `;
+            <div class="task-info">
+                <span class="priority-dot dot-${task.priority}"></span>
+                <span>${task.text}</span>
+            </div>
+            <div class="actions">
+                <button class="action-btn" onclick="toggleTask(${originalIndex})">✔</button>
+                <button class="action-btn edit" onclick="editTask(${originalIndex})" title="Edit">✏️</button>
+                <button class="action-btn delete" onclick="deleteTask(${originalIndex})">✖</button>
+            </div>
+        `;
 
     taskList.appendChild(li);
   });
