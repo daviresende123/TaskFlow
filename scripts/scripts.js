@@ -5,6 +5,7 @@ const userGreeting = document.getElementById("user-greeting");
 const dashboardScreen = document.getElementById("dashboard-screen");
 const loginScreen = document.querySelector(".card");
 const usernameInput = document.getElementById("username");
+const logoutBtn = document.getElementById("logout-btn");
 
 /* CRUD elements */
 const taskForm = document.getElementById("task-form");
@@ -107,3 +108,11 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 /* End of CRUD logic */
+
+/* Logout logic */
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("taskflow_user");
+
+  window.location.reload();
+});
+/* End of logout loginc */
