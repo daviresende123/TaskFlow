@@ -156,6 +156,8 @@ button {
 button:hover {
   background-color: var(--accent-hover);
   transform: translateY(-1px);
+  filter: brightness(1.2);
+  transform: scale(1.05);
 }
 
 button:active {
@@ -164,6 +166,12 @@ button:active {
   filter: brightness(0.8);
   transition: 0.1s;
 }
+
+.action-btn.delete {
+  background-color: var(--status-high);
+  margin-top: 0.5em;
+}
+
 /* End of Button Style */
 
 /* DashBoard Style*/
