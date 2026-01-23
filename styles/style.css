@@ -297,7 +297,7 @@ select option {
 }
 /* End of custom select styling*/
 
-/* Priority Dots logic */
+/* Priority Dots styling */
 .priority-dot {
   display: inline-block;
   width: 10px;
@@ -324,5 +324,19 @@ select option {
   display: flex;
   align-items: center;
 }
+/* End of Priority Dots styling */
 
-/* End of Priority Dots logic */
+/* Filter styling */
+.filters-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.filters-container select {
+  font-size: 0.8rem;
+  padding: 0.5rem;
+  margin-bottom: 0; /* Remove a margem inferior padrão que demos aos selects */
+}

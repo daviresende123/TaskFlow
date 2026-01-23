@@ -31,6 +31,7 @@
     <!-- End of Login Screen -->
 
     <!-- Dashboard -->
+    <!-- Dashboard header -->
     <section id="dashboard-screen" class="hidden">
       <header class="dashboard-header">
         <h2 id="user-greeting"></h2>
@@ -38,6 +39,7 @@
       </header>
 
       <div class="dashboard-content">
+        <!-- Create tasks card -->
         <aside class="card task-form-card">
           <h3>Create New Task</h3>
           <form id="task-form">
@@ -56,8 +58,23 @@
           </form>
         </aside>
 
+        <!-- My tasks card -->
         <main class="card task-list-card">
           <h3>My Tasks</h3>
+          <div class="filters-container">
+            <select id="filter-priority" onchange="renderTasks()">
+              <option value="all">All Priorities</option>
+              <option value="high">High Only</option>
+              <option value="medium">Medium Only</option>
+              <option value="low">Low Only</option>
+            </select>
+
+            <select id="sort-order" onchange="renderTasks()">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="priority">By Priority (High to Low)</option>
+            </select>
+          </div>
           <ul id="task-list"></ul>
         </main>
       </div>
