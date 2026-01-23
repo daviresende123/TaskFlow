@@ -255,3 +255,33 @@ select option {
   padding: 10px;
 }
 /* End of custom select styling*/
+
+/* Priority Dots logic */
+.priority-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.dot-low {
+  background-color: var(--status-low);
+  box-shadow: 0 0 8px var(--status-low);
+}
+.dot-medium {
+  background-color: var(--status-medium);
+  box-shadow: 0 0 8px var(--status-medium);
+}
+.dot-high {
+  background-color: var(--status-high);
+  box-shadow: 0 0 8px var(--status-high);
+}
+
+/* Aligning the text and dot in the list */
+.task-info {
+  display: flex;
+  align-items: center;
+}
+
+/* End of Priority Dots logic */

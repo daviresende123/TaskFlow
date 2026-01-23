@@ -17,7 +17,7 @@ const taskPriority = document.getElementById("task-priority");
 function displayDashboard(name) {
   loginScreen.classList.add("hidden");
   dashboardScreen.classList.remove("hidden");
-  userGreeting.textContent = `Welcome back, ${name}!`;
+  userGreeting.textContent = `Welcome, ${name}!`;
 }
 
 /* Check LocalStorage on page load */
@@ -60,12 +60,16 @@ function renderTasks() {
     li.className = `task-item ${task.completed ? "completed" : ""}`;
 
     li.innerHTML = `
-            <span>${task.text} <small>(${task.priority})</small></span>
-            <div class="actions">
-                <button onclick="toggleTask(${index})">✔</button>
-                <button onclick="deleteTask(${index})" style="background: var(--status-high)">✖</button>
-            </div>
-        `;
+        <div class="task-info">
+            <span class="priority-dot dot-${task.priority}"></span>
+            <span>${task.text}</span>
+        </div>
+        <div class="actions">
+            <button class="action-btn" onclick="toggleTask(${index})">✔</button>
+            <button class="action-btn delete" onclick="deleteTask(${index})">✖</button>
+        </div>
+    `;
+
     taskList.appendChild(li);
   });
 
