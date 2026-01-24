@@ -170,6 +170,7 @@ button:active {
 .action-btn.delete {
   background-color: var(--status-high);
   margin-top: 0.5em;
+  width: 40%;
 }
 
 .task-edit-container {
@@ -195,6 +196,10 @@ button:active {
   max-width: 350px;
 }
 
+.action-btn.complete {
+  width: 80%;
+}
+
 .action-btn.save {
   background-color: var(--status-low); /* Verdinha para salvar */
   margin-bottom: 0.5em;
@@ -203,6 +208,7 @@ button:active {
 .action-btn.edit {
   background-color: var(--status-medium); /* Verdinha para salvar */
   margin-top: 0.5em;
+  width: 40%;
 }
 
 /* End of Button Style */
@@ -247,8 +253,9 @@ button:active {
   background: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  margin-bottom: 0.5rem;
   transition: var(--transition);
+  margin-bottom: 0.4rem;
+  padding: 0.5rem 0.5rem;
 }
 
 .task-item.completed {

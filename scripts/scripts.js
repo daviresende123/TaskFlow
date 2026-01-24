@@ -89,7 +89,7 @@ function renderTasks() {
                 <span>${task.text}</span>
             </div>
             <div class="actions">
-                <button class="action-btn" onclick="toggleTask(${originalIndex})">✔</button>
+                <button class="action-btn complete" onclick="toggleTask(${originalIndex})">✔</button>
                 <button class="action-btn edit" onclick="editTask(${originalIndex})" title="Edit">✏️</button>
                 <button class="action-btn delete" onclick="deleteTask(${originalIndex})">✖</button>
             </div>
