@@ -80,6 +80,7 @@ function renderTasks() {
     const originalIndex = tasks.indexOf(task);
 
     const li = document.createElement("li");
+    li.setAttribute("id", `task-item-${originalIndex}`);
     li.className = `task-item ${task.completed ? "completed" : ""}`;
 
     li.innerHTML = `
@@ -138,7 +139,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /* Edit task logic */
 window.editTask = (index) => {
-  const li = taskList.children[index];
+  const li = document.getElementById(`task-item-${index}`);
   const task = tasks[index];
 
   li.innerHTML = `
