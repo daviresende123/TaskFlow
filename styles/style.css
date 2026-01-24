@@ -211,6 +211,25 @@ button:active {
   width: 40%;
 }
 
+#logout-btn {
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+
+  padding: 0.75em 1.5em !important;
+  font-size: 1em !important;
+  font-weight: 600;
+  line-height: 1;
+
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1em !important;
+  border-radius: calc(var(--radius) / 2);
+
+  align-self: center;
+}
 /* End of Button Style */
 
 /* DashBoard Style*/
@@ -223,6 +242,11 @@ button:active {
   gap: 2rem;
   align-items: flex-start;
   margin-top: 2rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .task-form-card,
