@@ -63,8 +63,14 @@ function renderTasks() {
   let displayTasks = [...tasks];
 
   /* Apply filters */
-  if (priorityFilter !== "all") {
-    displayTasks = displayTasks.filter((t) => t.priority === priorityFilter);
+  if (priorityFilter === "completed") {
+    displayTasks = displayTasks.filter((t) => t.completed);
+  } else {
+    displayTasks = displayTasks.filter((t) => !t.completed);
+
+    if (priorityFilter !== "all") {
+      displayTasks = displayTasks.filter((t) => t.priority === priorityFilter);
+    }
   }
 
   /* Apply sorting */
