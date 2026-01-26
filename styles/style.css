@@ -386,10 +386,25 @@ select option {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
+    gap: 1em;
     width: 100% !important;
-    margin-bottom: 1.5em;
+    overflow: hidden;
+  }
 
-    padding: 0 0.2em;
+  .dashboard-header h2 {
+    flex: 1;
+    min-width: 0;
+
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+
+    font-size: 1.5rem;
+    margin: 0 !important;
+  }
+
+  #logout-btn {
+    flex-shrink: 0 !important;
   }
 
   .dashboard-content {
