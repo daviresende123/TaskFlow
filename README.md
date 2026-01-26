@@ -248,6 +248,14 @@ Contributions are what make the open source community amazing! Any contributions
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+Found a bug or want to suggest a feature?
+
+1. Check if the issue already exists
+2. If not, [open a new issue](https://github.com/daviresende123/TaskFlow/issues/new)
+3. Provide as much detail as possible
+
+All contributions are welcome! 🎉
+
 ---
 
 ## 📄 License
