@@ -371,3 +371,34 @@ select option {
   padding: 0.5rem;
   margin-bottom: 0; /* Remove a margem inferior padrão que demos aos selects */
 }
+
+/* Mobile support logic*/
+@media (max-width: 960px) {
+  .dashboard-content {
+    flex-direction: column !important;
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .task-form-card,
+  .task-list-card {
+    width: 90% !important;
+    flex: none !important;
+  }
+
+  .dashboard-header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .filters-container {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .filters-container select {
+    width: 100%;
+  }
+}
+/* End of mobile support logic*/
