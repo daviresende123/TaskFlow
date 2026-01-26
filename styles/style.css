@@ -377,9 +377,8 @@ select option {
 /* Mobile support logic*/
 @media (max-width: 960px) {
   body {
-    
     padding: 1.5em !important;
-    align-items: flex-start !important; 
+    align-items: flex-start !important;
     height: auto !important;
   }
 
@@ -389,14 +388,14 @@ select option {
     align-items: center !important;
     width: 100% !important;
     margin-bottom: 1.5em;
-    
+
     padding: 0 0.2em;
   }
 
   .dashboard-content {
     flex-direction: column !important;
     width: 100% !important;
-    gap: 1.5em !important; 
+    gap: 1.5em !important;
   }
 
   .task-form-card,
@@ -408,3 +407,21 @@ select option {
   }
 }
 /* End of mobile support logic*/
+
+/*Fix task card shrinking issue*/
+.task-info span {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  display: block;
+  max-width: 100%;
+}
+
+.task-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex: 1;
+  min-width: 0;
+}
