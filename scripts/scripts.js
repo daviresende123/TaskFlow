@@ -292,7 +292,7 @@ const TaskController = {
     const cleanedText = DOM.taskInput.value.trim();
 
     if (!Validation.isValidTask(cleanedText)) {
-      UI.showAlert("A tarefa não pode estar vazia!");
+      UI.showAlert("The task cannot be empty!");
       return;
     }
 
@@ -337,7 +337,7 @@ const TaskController = {
       TaskManager.update(index, newText, editPriority.value);
       UI.renderTasks();
     } else {
-      UI.showAlert("O texto da tarefa não pode ser vazio.");
+      UI.showAlert("The task text cannot be empty.");
     }
   },
 
