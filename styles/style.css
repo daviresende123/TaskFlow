@@ -23,6 +23,10 @@
   --transition: all 0.3s ease;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 /* Basic Reset for Dark Mode */
 body {
   background-color: var(--bg-color);
@@ -33,7 +37,6 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  box-sizing: border-box;
 }
 
 /* Login Screen Card */
@@ -127,7 +130,6 @@ input {
   border-radius: calc(var(--radius) / 2);
   color: var(--text-primary);
   margin-bottom: 1.25rem;
-  box-sizing: border-box;
   transition: var(--transition);
 }
 
@@ -374,31 +376,35 @@ select option {
 
 /* Mobile support logic*/
 @media (max-width: 960px) {
+  body {
+    
+    padding: 1.5em !important;
+    align-items: flex-start !important; 
+    height: auto !important;
+  }
+
+  .dashboard-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 1.5em;
+    
+    padding: 0 0.2em;
+  }
+
   .dashboard-content {
     flex-direction: column !important;
-    gap: 1.5rem;
-    padding: 0 1rem;
+    width: 100% !important;
+    gap: 1.5em !important; 
   }
 
   .task-form-card,
   .task-list-card {
-    width: 90% !important;
+    width: 100% !important;
+    max-width: 100% !important;
     flex: none !important;
-  }
-
-  .dashboard-header {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .filters-container {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .filters-container select {
-    width: 100%;
+    margin: 0 !important;
   }
 }
 /* End of mobile support logic*/
