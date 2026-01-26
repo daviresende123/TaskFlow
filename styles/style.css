@@ -88,11 +88,13 @@ body {
 @keyframes smoothBreathe {
   0% {
     box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+
     filter: brightness(1);
   }
 
   100% {
     box-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+
     filter: brightness(1.3);
   }
 }
@@ -155,8 +157,9 @@ button {
 
 button:hover {
   background-color: var(--accent-hover);
-  transform: translateY(-1px) scale(1.05);
+  transform: translateY(-1px);
   filter: brightness(1.2);
+  transform: scale(1.05);
 }
 
 button:active {
@@ -200,28 +203,33 @@ button:active {
 }
 
 .action-btn.save {
-  background-color: var(--status-low);
+  background-color: var(--status-low); /* Verdinha para salvar */
   margin-bottom: 0.5em;
 }
 
 .action-btn.edit {
-  background-color: var(--status-medium);
+  background-color: var(--status-medium); /* Verdinha para salvar */
   margin-top: 0.5em;
   width: 40%;
 }
 
 #logout-btn {
-  width: auto;
-  max-width: none;
-  padding: 0.75em 1.5em;
-  font-size: 1em;
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+
+  padding: 0.75em 1.5em !important;
+  font-size: 1em !important;
   font-weight: 600;
   line-height: 1;
-  display: inline-flex;
+
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  margin-left: 1em;
+  margin-left: 1em !important;
   border-radius: calc(var(--radius) / 2);
+
   align-self: center;
 }
 /* End of Button Style */
@@ -245,7 +253,7 @@ button:active {
 
 .task-form-card,
 .task-list-card {
-  width: 100%;
+  width: 100% !important; /* Overriding the 70% from base card */
   text-align: left;
   min-width: 150px;
 }
@@ -267,12 +275,13 @@ button:active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
+  padding: 1rem;
   background: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
   transition: var(--transition);
   margin-bottom: 0.4rem;
+  padding: 0.5rem 0.5rem;
 }
 
 .task-item.completed {
@@ -347,17 +356,6 @@ select option {
 .task-info {
   display: flex;
   align-items: center;
-  gap: 0.5em;
-  flex: 1;
-  min-width: 0;
-}
-
-.task-info span {
-  word-wrap: break-word;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  display: block;
-  max-width: 100%;
 }
 /* End of Priority Dots styling */
 
@@ -373,52 +371,72 @@ select option {
 .filters-container select {
   font-size: 0.8rem;
   padding: 0.5rem;
-  margin-bottom: 0;
+  margin-bottom: 0; /* Remove a margem inferior padrão que demos aos selects */
 }
 
 /* Mobile support logic*/
 @media (max-width: 960px) {
   body {
-    padding: 1.5em;
-    align-items: flex-start;
-    height: auto;
+    padding: 1.5em !important;
+    align-items: flex-start !important;
+    height: auto !important;
   }
 
   .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     gap: 1em;
-    width: 100%;
+    width: 100% !important;
     overflow: hidden;
   }
 
   .dashboard-header h2 {
     flex: 1;
     min-width: 0;
+
     word-wrap: break-word;
     word-break: break-all;
     overflow-wrap: break-word;
+
     font-size: 1.5rem;
-    margin: 0;
+    margin: 0 !important;
   }
 
   #logout-btn {
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
   }
 
   .dashboard-content {
-    flex-direction: column;
-    width: 100%;
-    gap: 1.5em;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 1.5em !important;
   }
 
   .task-form-card,
   .task-list-card {
-    width: 100%;
-    max-width: 100%;
-    flex: none;
-    margin: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: none !important;
+    margin: 0 !important;
   }
 }
 /* End of mobile support logic*/
+
+/*Fix task card shrinking issue*/
+.task-info span {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  display: block;
+  max-width: 100%;
+}
+
+.task-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex: 1;
+  min-width: 0;
+}
