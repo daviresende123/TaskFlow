@@ -121,12 +121,30 @@ function renderTasks() {
   localStorage.setItem("taskflow_tasks", JSON.stringify(tasks));
 }
 
+/* Validation for Task Input */
+taskInput.addEventListener("input", function () {
+  let value = this.value.replace(/\s\s+/g, " ");
+
+  if (value.length > 50) {
+    value = value.substring(0, 50);
+  }
+
+  this.value = value;
+});
+
 /* Add Task */
 taskForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
+  const cleanedText = taskInput.value.trim();
+
+  if (cleanedText === "") {
+    alert("A tarefa não pode estar vazia!");
+    return;
+  }
+
   const newTask = {
-    text: taskInput.value,
+    text: cleanedText,
     priority: taskPriority.value,
     completed: false,
   };
@@ -180,13 +198,16 @@ window.editTask = (index) => {
 
 /* Save Edited Task */
 window.saveTask = (index) => {
-  const newText = document.getElementById(`edit-text-${index}`).value;
+  const editInput = document.getElementById(`edit-text-${index}`);
+  const newText = editInput.value.replace(/\s\s+/g, " ").trim();
   const newPriority = document.getElementById(`edit-priority-${index}`).value;
 
-  if (newText.trim() !== "") {
-    tasks[index].text = newText;
+  if (newText !== "") {
+    tasks[index].text = newText.substring(0, 50);
     tasks[index].priority = newPriority;
-    renderTasks(); // Refresh UI and Save to LocalStorage
+    renderTasks();
+  } else {
+    alert("O texto da tarefa não pode ser vazio.");
   }
 };
 /* End of CRUD logic */
