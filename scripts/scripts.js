@@ -1,221 +1,392 @@
-/* Elements references */
-/* Screen transition logic elements */
-const loginForm = document.getElementById("login-form");
-const userGreeting = document.getElementById("user-greeting");
-const dashboardScreen = document.getElementById("dashboard-screen");
-const loginScreen = document.querySelector(".card");
-const usernameInput = document.getElementById("username");
-const logoutBtn = document.getElementById("logout-btn");
+/* ===================================
+   CONSTANTS & CONFIGURATION
+   =================================== */
+const CONFIG = {
+  STORAGE_KEYS: {
+    USER: "taskflow_user",
+    TASKS: "taskflow_tasks",
+  },
+  VALIDATION: {
+    MIN_NAME_LENGTH: 2,
+    MAX_NAME_LENGTH: 21,
+    MAX_TASK_LENGTH: 50,
+  },
+  PRIORITY_WEIGHTS: {
+    high: 3,
+    medium: 2,
+    low: 1,
+  },
+};
 
-/* CRUD elements */
-const taskForm = document.getElementById("task-form");
-const taskList = document.getElementById("task-list");
-const taskInput = document.getElementById("task-input");
-const taskPriority = document.getElementById("task-priority");
+/* ===================================
+   DOM ELEMENTS
+   =================================== */
+const DOM = {
+  // Screen elements
+  loginForm: document.getElementById("login-form"),
+  loginScreen: document.querySelector(".card"),
+  dashboardScreen: document.getElementById("dashboard-screen"),
+  userGreeting: document.getElementById("user-greeting"),
+  usernameInput: document.getElementById("username"),
+  logoutBtn: document.getElementById("logout-btn"),
 
-/* Function to handle the View Switching logic */
-function displayDashboard(name) {
-  loginScreen.classList.add("hidden");
-  dashboardScreen.classList.remove("hidden");
-  userGreeting.textContent = `Welcome, ${name}!`;
-}
+  // Task elements
+  taskForm: document.getElementById("task-form"),
+  taskList: document.getElementById("task-list"),
+  taskInput: document.getElementById("task-input"),
+  taskPriority: document.getElementById("task-priority"),
+  filterPriority: document.getElementById("filter-priority"),
+  sortOrder: document.getElementById("sort-order"),
+};
 
-/* Check LocalStorage on page load */
-window.addEventListener("DOMContentLoaded", () => {
-  const savedName = localStorage.getItem("taskflow_user");
+/* ===================================
+   STORAGE UTILITIES
+   =================================== */
+const Storage = {
+  get(key) {
+    try {
+      const item = localStorage.getItem(key);
+      return key === CONFIG.STORAGE_KEYS.TASKS ? JSON.parse(item) || [] : item;
+    } catch (error) {
+      console.error(`Error reading from localStorage (${key}):`, error);
+      return key === CONFIG.STORAGE_KEYS.TASKS ? [] : null;
+    }
+  },
 
-  if (savedName) {
-    displayDashboard(savedName);
-  }
-});
+  set(key, value) {
+    try {
+      const data = typeof value === "object" ? JSON.stringify(value) : value;
+      localStorage.setItem(key, data);
+    } catch (error) {
+      console.error(`Error writing to localStorage (${key}):`, error);
+    }
+  },
 
-/* Screen transition logic */
+  remove(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Error removing from localStorage (${key}):`, error);
+    }
+  },
+};
 
-/* Input validation for Username */
-usernameInput.addEventListener("input", function () {
-  let value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
+/* ===================================
+   INPUT VALIDATION UTILITIES
+   =================================== */
+const Validation = {
+  sanitizeText(text, maxLength) {
+    return text.replace(/\s\s+/g, " ").substring(0, maxLength);
+  },
 
-  value = value.replace(/\s\s+/g, " ");
+  sanitizeName(name) {
+    return name
+      .replace(/[^a-zA-ZÀ-ÿ\s]/g, "")
+      .replace(/\s\s+/g, " ")
+      .substring(0, CONFIG.VALIDATION.MAX_NAME_LENGTH);
+  },
 
-  if (value.length > 21) {
-    value = value.substring(0, 21);
-  }
+  isValidName(name) {
+    return name.trim().length >= CONFIG.VALIDATION.MIN_NAME_LENGTH;
+  },
 
-  this.value = value;
-});
+  isValidTask(text) {
+    return text.trim().length > 0;
+  },
+};
 
-/* Event listener for the login form */
-loginForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+/* ===================================
+   TASK STATE MANAGEMENT
+   =================================== */
+const TaskManager = {
+  tasks: [],
 
-  const userName = usernameInput.value.trim();
+  init() {
+    this.tasks = Storage.get(CONFIG.STORAGE_KEYS.TASKS);
+  },
 
-  if (userName.length >= 2) {
-    localStorage.setItem("taskflow_user", userName);
+  save() {
+    Storage.set(CONFIG.STORAGE_KEYS.TASKS, this.tasks);
+  },
 
-    /* Update UI */
-    displayDashboard(userName);
-  } else {
-    alert("Please enter a valid name. It must contain at least 2 letters.");
-  }
-});
-/* End of screen transition logic */
+  add(text, priority) {
+    const newTask = {
+      text: text.trim(),
+      priority,
+      completed: false,
+    };
+    this.tasks.push(newTask);
+    this.save();
+  },
 
-/* CRUD Logic */
-/* Task State */
-let tasks = JSON.parse(localStorage.getItem("taskflow_tasks")) || [];
+  update(index, text, priority) {
+    if (this.tasks[index]) {
+      this.tasks[index].text = text.substring(
+        0,
+        CONFIG.VALIDATION.MAX_TASK_LENGTH,
+      );
+      this.tasks[index].priority = priority;
+      this.save();
+    }
+  },
 
-/* Function to render tasks in the UI */
-function renderTasks() {
-  taskList.innerHTML = "";
+  toggle(index) {
+    if (this.tasks[index]) {
+      this.tasks[index].completed = !this.tasks[index].completed;
+      this.save();
+    }
+  },
 
-  /* Get values from the filter selects */
-  const priorityFilter = document.getElementById("filter-priority").value;
-  const sortOrder = document.getElementById("sort-order").value;
+  delete(index) {
+    this.tasks.splice(index, 1);
+    this.save();
+  },
 
-  /* Create a modified copy of the array */
-  let displayTasks = [...tasks];
+  getFiltered(priorityFilter) {
+    if (priorityFilter === "completed") {
+      return this.tasks.filter((t) => t.completed);
+    }
 
-  /* Apply filters */
-  if (priorityFilter === "completed") {
-    displayTasks = displayTasks.filter((t) => t.completed);
-  } else {
-    displayTasks = displayTasks.filter((t) => !t.completed);
+    let filtered = this.tasks.filter((t) => !t.completed);
 
     if (priorityFilter !== "all") {
-      displayTasks = displayTasks.filter((t) => t.priority === priorityFilter);
+      filtered = filtered.filter((t) => t.priority === priorityFilter);
     }
-  }
 
-  /* Apply sorting */
-  if (sortOrder === "newest") {
-    displayTasks.reverse(); // Standard is oldest (index 0)
-  } else if (sortOrder === "priority") {
-    const weights = { high: 3, medium: 2, low: 1 };
-    displayTasks.sort((a, b) => weights[b.priority] - weights[a.priority]);
-  }
+    return filtered;
+  },
 
-  /* Render the list */
-  displayTasks.forEach((task) => {
-    const originalIndex = tasks.indexOf(task);
+  getSorted(tasks, sortOrder) {
+    const tasksCopy = [...tasks];
 
+    switch (sortOrder) {
+      case "newest":
+        return tasksCopy.reverse();
+      case "priority":
+        return tasksCopy.sort(
+          (a, b) =>
+            CONFIG.PRIORITY_WEIGHTS[b.priority] -
+            CONFIG.PRIORITY_WEIGHTS[a.priority],
+        );
+      default:
+        return tasksCopy;
+    }
+  },
+};
+
+/* ===================================
+   UI RENDERING
+   =================================== */
+const UI = {
+  showDashboard(name) {
+    DOM.loginScreen.classList.add("hidden");
+    DOM.dashboardScreen.classList.remove("hidden");
+    DOM.userGreeting.textContent = `Welcome, ${name}!`;
+  },
+
+  createTaskElement(task, originalIndex) {
     const li = document.createElement("li");
     li.setAttribute("id", `task-item-${originalIndex}`);
     li.className = `task-item ${task.completed ? "completed" : ""}`;
 
     li.innerHTML = `
-            <div class="task-info">
-                <span class="priority-dot dot-${task.priority}"></span>
-                <span>${task.text}</span>
-            </div>
-            <div class="actions">
-                <button class="action-btn complete" onclick="toggleTask(${originalIndex})">✔</button>
-                <button class="action-btn edit" onclick="editTask(${originalIndex})" title="Edit">✏️</button>
-                <button class="action-btn delete" onclick="deleteTask(${originalIndex})">✖</button>
-            </div>
-        `;
-
-    taskList.appendChild(li);
-  });
-
-  localStorage.setItem("taskflow_tasks", JSON.stringify(tasks));
-}
-
-/* Validation for Task Input */
-taskInput.addEventListener("input", function () {
-  let value = this.value.replace(/\s\s+/g, " ");
-
-  if (value.length > 50) {
-    value = value.substring(0, 50);
-  }
-
-  this.value = value;
-});
-
-/* Add Task */
-taskForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const cleanedText = taskInput.value.trim();
-
-  if (cleanedText === "") {
-    alert("A tarefa não pode estar vazia!");
-    return;
-  }
-
-  const newTask = {
-    text: cleanedText,
-    priority: taskPriority.value,
-    completed: false,
-  };
-
-  tasks.push(newTask);
-  taskInput.value = "";
-  renderTasks();
-});
-
-/* Toggle Complete */
-window.toggleTask = (index) => {
-  tasks[index].completed = !tasks[index].completed;
-  renderTasks();
-};
-
-/* Delete Task */
-window.deleteTask = (index) => {
-  tasks.splice(index, 1);
-  renderTasks();
-};
-
-/* Update your existing DOMContentLoaded to also call renderTasks() */
-window.addEventListener("DOMContentLoaded", () => {
-  const savedName = localStorage.getItem("taskflow_user");
-  if (savedName) {
-    displayDashboard(savedName);
-    renderTasks(); /* Render the list if user is logged in */
-  }
-});
-
-/* Edit task logic */
-window.editTask = (index) => {
-  const li = document.getElementById(`task-item-${index}`);
-  const task = tasks[index];
-
-  li.innerHTML = `
-        <div class="task-edit-container">
-            <input type="text" id="edit-text-${index}" value="${task.text}" class="edit-input">
-            <select id="edit-priority-${index}" class="edit-select">
-                <option value="low" ${task.priority === "low" ? "selected" : ""}> Low</option>
-                <option value="medium" ${task.priority === "medium" ? "selected" : ""}> Medium</option>
-                <option value="high" ${task.priority === "high" ? "selected" : ""}> High</option>
-            </select>
-        </div>
-        <div class="actions">
-            <button class="action-btn save" onclick="saveTask(${index})">💾</button>
-            <button class="action-btn" onclick="renderTasks()">✕</button>
-        </div>
+      <div class="task-info">
+        <span class="priority-dot dot-${task.priority}"></span>
+        <span>${task.text}</span>
+      </div>
+      <div class="actions">
+        <button class="action-btn complete" onclick="TaskController.toggle(${originalIndex})" title="Complete">✔</button>
+        <button class="action-btn edit" onclick="TaskController.startEdit(${originalIndex})" title="Edit">✏️</button>
+        <button class="action-btn delete" onclick="TaskController.delete(${originalIndex})" title="Delete">✖</button>
+      </div>
     `;
+
+    return li;
+  },
+
+  createEditElement(task, index) {
+    return `
+      <div class="task-edit-container">
+        <input type="text" id="edit-text-${index}" value="${task.text}" class="edit-input">
+        <select id="edit-priority-${index}" class="edit-select">
+          <option value="low" ${task.priority === "low" ? "selected" : ""}>Low</option>
+          <option value="medium" ${task.priority === "medium" ? "selected" : ""}>Medium</option>
+          <option value="high" ${task.priority === "high" ? "selected" : ""}>High</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="action-btn save" onclick="TaskController.saveEdit(${index})" title="Save">💾</button>
+        <button class="action-btn" onclick="TaskController.cancelEdit()" title="Cancel">✕</button>
+      </div>
+    `;
+  },
+
+  renderTasks() {
+    DOM.taskList.innerHTML = "";
+
+    const priorityFilter = DOM.filterPriority.value;
+    const sortOrder = DOM.sortOrder.value;
+
+    const filteredTasks = TaskManager.getFiltered(priorityFilter);
+    const sortedTasks = TaskManager.getSorted(filteredTasks, sortOrder);
+
+    sortedTasks.forEach((task) => {
+      const originalIndex = TaskManager.tasks.indexOf(task);
+      const taskElement = this.createTaskElement(task, originalIndex);
+      DOM.taskList.appendChild(taskElement);
+    });
+  },
+
+  clearTaskInput() {
+    DOM.taskInput.value = "";
+  },
+
+  showAlert(message) {
+    alert(message);
+  },
 };
 
-/* Save Edited Task */
-window.saveTask = (index) => {
-  const editInput = document.getElementById(`edit-text-${index}`);
-  const newText = editInput.value.replace(/\s\s+/g, " ").trim();
-  const newPriority = document.getElementById(`edit-priority-${index}`).value;
+/* ===================================
+   CONTROLLERS
+   =================================== */
+const AuthController = {
+  init() {
+    const savedName = Storage.get(CONFIG.STORAGE_KEYS.USER);
 
-  if (newText !== "") {
-    tasks[index].text = newText.substring(0, 50);
-    tasks[index].priority = newPriority;
-    renderTasks();
-  } else {
-    alert("O texto da tarefa não pode ser vazio.");
-  }
+    if (savedName) {
+      this.login(savedName);
+    }
+  },
+
+  login(name) {
+    UI.showDashboard(name);
+    TaskManager.init();
+    UI.renderTasks();
+  },
+
+  handleLogin(event) {
+    event.preventDefault();
+
+    const userName = DOM.usernameInput.value.trim();
+
+    if (Validation.isValidName(userName)) {
+      Storage.set(CONFIG.STORAGE_KEYS.USER, userName);
+      this.login(userName);
+    } else {
+      UI.showAlert(
+        `Please enter a valid name. It must contain at least ${CONFIG.VALIDATION.MIN_NAME_LENGTH} letters.`,
+      );
+    }
+  },
+
+  logout() {
+    Storage.remove(CONFIG.STORAGE_KEYS.USER);
+    window.location.reload();
+  },
 };
-/* End of CRUD logic */
 
-/* Logout logic */
-logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("taskflow_user");
+const TaskController = {
+  handleSubmit(event) {
+    event.preventDefault();
 
-  window.location.reload();
+    const cleanedText = DOM.taskInput.value.trim();
+
+    if (!Validation.isValidTask(cleanedText)) {
+      UI.showAlert("A tarefa não pode estar vazia!");
+      return;
+    }
+
+    TaskManager.add(cleanedText, DOM.taskPriority.value);
+    UI.clearTaskInput();
+    UI.renderTasks();
+  },
+
+  toggle(index) {
+    TaskManager.toggle(index);
+    UI.renderTasks();
+  },
+
+  delete(index) {
+    TaskManager.delete(index);
+    UI.renderTasks();
+  },
+
+  startEdit(index) {
+    const li = document.getElementById(`task-item-${index}`);
+    const task = TaskManager.tasks[index];
+
+    if (li && task) {
+      li.innerHTML = UI.createEditElement(task, index);
+    }
+  },
+
+  saveEdit(index) {
+    const editInput = document.getElementById(`edit-text-${index}`);
+    const editPriority = document.getElementById(`edit-priority-${index}`);
+
+    if (!editInput || !editPriority) return;
+
+    const newText = Validation.sanitizeText(
+      editInput.value,
+      CONFIG.VALIDATION.MAX_TASK_LENGTH,
+    );
+
+    if (Validation.isValidTask(newText)) {
+      TaskManager.update(index, newText, editPriority.value);
+      UI.renderTasks();
+    } else {
+      UI.showAlert("O texto da tarefa não pode ser vazio.");
+    }
+  },
+
+  cancelEdit() {
+    UI.renderTasks();
+  },
+};
+
+/* ===================================
+   EVENT LISTENERS
+   =================================== */
+const EventListeners = {
+  init() {
+    // Username input validation
+    DOM.usernameInput.addEventListener("input", function () {
+      this.value = Validation.sanitizeName(this.value);
+    });
+
+    // Task input validation
+    DOM.taskInput.addEventListener("input", function () {
+      this.value = Validation.sanitizeText(
+        this.value,
+        CONFIG.VALIDATION.MAX_TASK_LENGTH,
+      );
+    });
+
+    // Form submissions
+    DOM.loginForm.addEventListener("submit", (e) =>
+      AuthController.handleLogin(e),
+    );
+    DOM.taskForm.addEventListener("submit", (e) =>
+      TaskController.handleSubmit(e),
+    );
+
+    // Logout
+    DOM.logoutBtn.addEventListener("click", () => AuthController.logout());
+
+    // Filter/Sort changes
+    DOM.filterPriority?.addEventListener("change", () => UI.renderTasks());
+    DOM.sortOrder?.addEventListener("change", () => UI.renderTasks());
+  },
+};
+
+/* ===================================
+   INITIALIZATION
+   =================================== */
+window.addEventListener("DOMContentLoaded", () => {
+  TaskManager.init();
+  EventListeners.init();
+  AuthController.init();
 });
-/* End of logout loginc */
+
+// Expose controllers globally for inline onclick handlers
+window.TaskController = TaskController;
