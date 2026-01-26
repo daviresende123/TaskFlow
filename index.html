@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline';"
+    />
+    <meta name="referrer" content="no-referrer" />
     <link rel="stylesheet" href="styles/style.css" />
     <script defer src="scripts/scripts.js"></script>
     <title>TaskFlow</title>
@@ -15,7 +20,7 @@
         <h2>Welcome!</h2>
       </header>
 
-      <form id="login-form">
+      <form id="login-form" autocomplete="off">
         <label for="username"><h3>What's Your Name?</h3></label>
         <input
           type="text"
@@ -49,6 +54,8 @@
               type="text"
               id="task-input"
               placeholder="What needs to be done?"
+              maxlength="50"
+              autocomplete="off"
               required
             />
             <select id="task-priority">

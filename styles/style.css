@@ -203,12 +203,12 @@ button:active {
 }
 
 .action-btn.save {
-  background-color: var(--status-low); /* Verdinha para salvar */
+  background-color: var(--status-low);
   margin-bottom: 0.5em;
 }
 
 .action-btn.edit {
-  background-color: var(--status-medium); /* Verdinha para salvar */
+  background-color: var(--status-medium);
   margin-top: 0.5em;
   width: 40%;
 }
@@ -253,7 +253,7 @@ button:active {
 
 .task-form-card,
 .task-list-card {
-  width: 100% !important; /* Overriding the 70% from base card */
+  width: 100% !important;
   text-align: left;
   min-width: 150px;
 }
@@ -371,7 +371,7 @@ select option {
 .filters-container select {
   font-size: 0.8rem;
   padding: 0.5rem;
-  margin-bottom: 0; /* Remove a margem inferior padrão que demos aos selects */
+  margin-bottom: 0;
 }
 
 /* Mobile support logic*/
