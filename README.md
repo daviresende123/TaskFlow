@@ -284,7 +284,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 If you found this project helpful, please consider giving it a ⭐!
 
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/taskflow?style=social)](https://github.com/yourusername/taskflow/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/yourusername/taskflow?style=social)](https://github.com/yourusername/taskflow/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/daviresende123/taskflow?style=social)](https://github.com/daviresende123/taskflow/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/daviresende123/taskflow?style=social)](https://github.com/daviresende123/taskflow/network/members)
 
 </div>
