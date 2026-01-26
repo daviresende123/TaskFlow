@@ -307,8 +307,10 @@ const TaskController = {
   },
 
   delete(index) {
-    TaskManager.delete(index);
-    UI.renderTasks();
+    if (confirm("Do you really want to delete this task?")) {
+      TaskManager.delete(index);
+      UI.renderTasks();
+    }
   },
 
   startEdit(index) {
