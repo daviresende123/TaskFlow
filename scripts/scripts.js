@@ -31,18 +31,32 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /* Screen transition logic */
 
+/* Input validation for Username */
+usernameInput.addEventListener("input", function () {
+  let value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, "");
+
+  value = value.replace(/\s\s+/g, " ");
+
+  if (value.length > 21) {
+    value = value.substring(0, 21);
+  }
+
+  this.value = value;
+});
+
 /* Event listener for the login form */
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const userName = usernameInput.value.trim();
 
-  if (userName !== "") {
-    /* Save name to LocalStorage */
+  if (userName.length >= 2) {
     localStorage.setItem("taskflow_user", userName);
 
     /* Update UI */
     displayDashboard(userName);
+  } else {
+    alert("Please enter a valid name. It must contain at least 2 letters.");
   }
 });
 /* End of screen transition logic */

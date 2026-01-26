@@ -20,9 +20,11 @@
         <input
           type="text"
           id="username"
-          placeholder="Enter your name..."
+          placeholder="Your name or nickname"
           required
           aria-label="User Name"
+          maxlength="21"
+          pattern="[A-Za-zÀ-ÿ\s]+"
         />
         <button type="submit">Login</button>
       </form>
